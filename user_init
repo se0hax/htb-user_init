@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Update package list
+sudo apt-get update
+
+# Install CherryTree
+sudo apt-get install -y cherrytree
+sudo apt-get install -y rlwrap
+
+# Create required directories
+mkdir -p ~/tools/pivot ~/tools/activedirectory ~/tools/linux ~/tools/windows
+
+# Install AutoRecon by cloning from GitHub
+# Note: Assumes Python and required dependencies are present; see GitHub for full setup if needed
+git clone https://github.com/Tib3rius/AutoRecon.git ~/tools/AutoRecon
+
+# Download and install Ligolo binaries into ~/tools/pivot
+wget -O ~/tools/pivot/ligolo-ng_proxy.tar.gz https://github.com/nicocha30/ligolo-ng/releases/download/v0.7.5/ligolo-ng_proxy_0.7.5_linux_amd64.tar.gz
+tar -xzf ~/tools/pivot/ligolo-ng_proxy.tar.gz -C ~/tools/pivot/
+chmod +x ~/tools/pivot/ligolo-ng_proxy
+rm ~/tools/pivot/ligolo-ng_proxy.tar.gz
+wget -O ~/tools/pivot/ligolo-ng_agent.tar.gz https://github.com/nicocha30/ligolo-ng/releases/download/v0.7.5/ligolo-ng_agent_0.7.5_linux_amd64.tar.gz
+#tar -xzf ~/tools/pivot/ligolo-ng_ligolo-ng_agent.tar.gz -C ~/tools/pivot/
+#chmod +x ~/tools/pivot/ligolo-ng_agent
+#rm ~/tools/pivot/ligolo-ng_agent.tar.gz
+wget -O ~/tools/pivot/winligolo-ng_agent.zip https://github.com/nicocha30/ligolo-ng/releases/download/v0.7.5/ligolo-ng_agent_0.7.5_windows_amd64.zip
+#unzip ./winligolo-ng_agent.zip 
+#rm ~/tools/pivot/winligolo-ng_agent.zip
+
+# Download Chisel and place it in ~/tools/pivot
+wget -O ~/tools/pivot/chisel.gz https://github.com/jpillora/chisel/releases/download/v1.7.7/chisel_1.7.7_linux_amd64.gz
+gunzip ~/tools/pivot/chisel.gz
+chmod +x ~/tools/pivot/chisel
+
+# Download Plink and place it in ~/tools/pivot
+wget -O ~/tools/pivot/plink.exe https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe
+
+# Clone Active Directory tools into ~/tools/activedirectory
+git clone --quiet https://github.com/urbanadventurer/username-anarchy.git ~/tools/activedirectory/username-anarchy
+git clone --quiet https://github.com/tevora-threat/SharpView.git ~/tools/activedirectory/SharpView
+git clone --quiet https://github.com/SpecterOps/SharpHound.git ~/tools/activedirectory/SharpHound
+git clone --quiet https://github.com/lgandx/Responder.git ~/tools/activedirectory/Responder
+git clone --quiet https://github.com/timothyericsson/Filler.git ~/tools/activedirectory/Filler
+
+# Install bloodyAD using pipx
+sudo pipx install bloodyad
+
+# Create Mimikatz symlinks
+ln -s /usr/share/windows-resources/mimikatz ~/tools/activedirectory/mimikatz
+ln -s /usr/share/windows-resources/mimikatz ~/tools/windows/mimikatz
+
+# Attempt to install adPEAS using pipx
+pipx install --include-deps git+https://github.com/ajm4n/adPEAS
+
+# Download Windows tools into ~/tools/windows
+wget -O ~/tools/windows/nc64-32.exe https://github.com/vinsworldcom/NetCat64/releases/download/1.11.6.4/nc64-32.exe
+wget -O ~/tools/windows/nc64.exe https://github.com/vinsworldcom/NetCat64/releases/download/1.11.6.4/nc64.exe
+wget -O ~/tools/windows/winPEASany_ofs.exe https://github.com/peass-ng/PEASS-ng/releases/latest/download/winPEASany_ofs.exe
+
+# Download Linux tools into ~/tools/linux
+wget -O ~/tools/linux/pspy32 https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy32
+wget -O ~/tools/linux/pspy64 https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64
+wget -O ~/tools/linux/linpeas.sh https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh
+wget -O ~/tools/linux/linpeas_linux_amd64 https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas_linux_amd64
+wget -O ~/tools/linux/linpeas_fat.sh https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas_fat.sh
+chmod +x ~/tools/linux/pspy32 ~/tools/linux/pspy64 ~/tools/linux/linpeas_linux_amd64
